@@ -1,8 +1,19 @@
 from Intaro import IntaroApy
-from pprint import pprint
 
-i = IntaroApy('https://g-lights.intarocrm.ru', 'pPsg3F79dj0OYkeYKwogOT9cccaipIKR')
+# copy-one.ru
+crm = IntaroApy('https://copy-one.intarocrm.ru', 'Yogg9w7pxDW6sS3yESXljKpSueTJVURW')
 
-result = i.orderGet(1342)
+# copy-galaxys5
+#crm = IntaroApy('https://copy-one.intarocrm.ru', 'zpbJiKQEFEo9OlpEebM8OATs5t7dzgjB')
 
-pprint(result)
+# Pulwin
+#crm = IntaroApy('https://copy-one.intarocrm.ru', 'Lx2W5QRy6lQUotkaLd1cAXYRPIG4SdhR')
+
+order = {
+    'firstName': 'TESTER',
+    'phone': '89991119922',
+    'orderMethod': 'landing-page'
+  }
+
+result = crm.orderCreate(order)
+
