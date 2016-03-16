@@ -1,14 +1,16 @@
-from os.path import join, dirname
-
+# coding=utf-8
 from setuptools import setup
 
-
 setup(
-	name='api-client-python',
-	version=0.1,
-	long_description=open(join(dirname(__file__), 'README.md')).read(),
-	author='Intarocrm',
-	package_data={},
-	install_requires=[u'requests', ],
-	url='https://github.com/intarocrm/api-client-python.git'
+    name='retailcrm',
+    version='3.0.5',
+    description='Client for retailCRM API',
+    url='https://github.com/retailcrm/api-client-python',
+    author='retailCRM',
+    author_email='integration@retailcrm.ru',
+    keywords='crm, saas, rest, e-commerce',
+    license='MIT',
+    packages=['retailcrm'],
+    package_data={},
+    install_requires=['requests']
 )
