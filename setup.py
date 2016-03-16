@@ -1,20 +1,16 @@
-from os.path import join, dirname
+# coding=utf-8
 from setuptools import setup
-from imp import load_source
-
-description = "RetailCrm REST API client"
-version = load_source("version", join("retailcrm", "version.py"))
 
 setup(
-    name='api-client-python',
-    version=version.__version__,
+    name='retailcrm',
+    version='3.0.5',
+    description='Client for retailCRM API',
     url='https://github.com/retailcrm/api-client-python',
-    description=description,
-    long_description=open(join(dirname(__file__), 'README.md')).read(),
+    author='retailCRM',
+    author_email='integration@retailcrm.ru',
     keywords='crm, saas, rest, e-commerce',
     license='MIT',
-    author='RetailCrm',
-    author_email='integration@retailcrm.ru',
+    packages=['retailcrm'],
     package_data={},
     install_requires=['requests']
 )

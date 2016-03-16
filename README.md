@@ -1,24 +1,19 @@
-api-client-python
-=================
+retailCRM API python client
+===========================
 
-RetailCrm REST API client (python version)
-
-##Setup
+### Install
 
 ```
-git clone https://github.com/retailcrm/api-client-python.git
-cd api-client-python
-pip install requests
-python setup.py install
+pip install retailcrm
 ```
 
-##Usage
+### Usage
 
 ```python
-from retailcrm import Client
+import retailcrm
 
 
-crm = Client('https://demo.intarocrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
+client = retailcrm.Client('https://demo.intarocrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
 
 order = {
   'firstName': 'Ivan',
@@ -28,5 +23,9 @@ order = {
   'orderMethod': 'call-request',
 }
 
-result = crm.orderCreate(order)
+result = crm.orders_create(order)
 ```
+
+### Documentation
+
+* http://www.retailcrm.pro/docs/Developers/ApiVersion3

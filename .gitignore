@@ -1,3 +1,4 @@
 *.swp
 *.pyc
-try.py
+/*.egg-info
+/dist/
