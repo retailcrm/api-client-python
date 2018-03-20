@@ -7,18 +7,16 @@ Setup file
 import os
 from setuptools import setup
 
-# Utility function to read the README file.
-# Used for the long_description.
-
 
 def read(fname):
+    """Read readme for long description"""
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
 setup(
     name='retailcrm',
     version='5.0.0',
-    description='retailCRM multi version API client',
+    description='retailCRM API client',
     long_description=read('README.md'),
     url='https://github.com/retailcrm/api-client-python',
     author='retailCRM',

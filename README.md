@@ -24,7 +24,7 @@ pip install retailcrm
 import retailcrm
 
 
-client = retailcrm.v3('https://demo.intarocrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
+client = retailcrm.v3('https://demo.retailcrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
 
 order = {
   'firstName': 'John',
@@ -45,7 +45,7 @@ result = client.order_create(order)
 import retailcrm
 
 
-client = retailcrm.v4('https://demo.intarocrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
+client = retailcrm.v4('https://demo.retailcrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
 
 result = client.customers_history(filter={'sinceId': '1500', 'startDate': '2018-03-01'})
 
@@ -60,7 +60,7 @@ print(result['pagination']['totalCount'])
 import retailcrm
 
 
-client = retailcrm.v5('https://demo.intarocrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
+client = retailcrm.v5('https://demo.retailcrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
 site = 'example-com'
 task = {
   'text': 'Product availability problem',
