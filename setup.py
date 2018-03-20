@@ -15,13 +15,13 @@ def read(fname):
 
 setup(
     name='retailcrm',
-    version='5.0.0',
+    version='5.0.1',
     description='retailCRM API client',
-    long_description=read('README.md'),
+    long_description=read('README'),
     url='https://github.com/retailcrm/api-client-python',
     author='retailCRM',
     author_email='integration@retailcrm.ru',
-    keywords='crm, saas, rest, e-commerce',
+    keywords='crm saas rest e-commerce',
     license='MIT',
     packages=['retailcrm', 'tests'],
     package_data={},

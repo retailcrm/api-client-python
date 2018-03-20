@@ -1,0 +1,79 @@
+retailCRM python API client
+===========================
+
+This is python retailCRM API client. This library allows to use all
+available API versions.
+
+Install
+-------
+
+::
+
+    pip install retailcrm
+
+Usage
+-----
+
+
+.. code:: python
+
+    # coding utf-8
+
+    import retailcrm
+
+
+    client = retailcrm.v3('https://demo.retailcrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
+
+    order = {
+      'firstName': 'John',
+      'lastName': 'Doe',
+      'phone': '+79000000000',
+      'email': 'john@example.com',
+      'orderMethod': 'call-request',
+    }
+
+    result = client.order_create(order)
+
+
+.. code:: python
+
+    # coding utf-8
+
+    import retailcrm
+
+
+    client = retailcrm.v4('https://demo.retailcrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
+
+    result = client.customers_history(filter={'sinceId': '1500', 'startDate': '2018-03-01'})
+
+    print(result['pagination']['totalCount'])
+
+
+.. code:: python
+
+    # coding utf-8
+
+    import retailcrm
+
+
+    client = retailcrm.v5('https://demo.retailcrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
+    site = 'example-com'
+    task = {
+      'text': 'Product availability problem',
+      'commentary': 'Take a look ASAP',
+      'order': {
+        'externalId': '100500'
+      },
+      'performerId': 1
+    }
+
+    result = client.task_create(task, site)
+
+Documentation
+-------------
+
+-  `English`_
+-  `Russian`_
+
+.. _English: http://www.retailcrm.pro/docs/Developers/Index
+.. _Russian: http://www.retailcrm.ru/docs/Developers/Index
