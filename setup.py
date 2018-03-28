@@ -15,7 +15,7 @@ def read(fname):
 
 setup(
     name='retailcrm',
-    version='5.0.1',
+    version='5.0.2',
     description='retailCRM API client',
     long_description=read('README'),
     url='https://github.com/retailcrm/api-client-python',
@@ -23,7 +23,7 @@ setup(
     author_email='integration@retailcrm.ru',
     keywords='crm saas rest e-commerce',
     license='MIT',
-    packages=['retailcrm', 'tests'],
+    packages=['retailcrm', 'retailcrm/versions'],
     package_data={},
     install_requires=['requests', 'multidimensional_urlencode', 'nose'],
     classifiers=[
