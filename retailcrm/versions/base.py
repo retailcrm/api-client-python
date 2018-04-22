@@ -27,19 +27,19 @@ class Base(object):
         :return: Response
         """
         base_url = self.api_url + '/' + self.api_version if version else self.api_url
-        requests_url = base_url + url if not self.parameters else base_url + \
-            url + "?" + query_builder(self.parameters)
+        requests_url = base_url + url if not self.parameters else base_url + url + "?" + query_builder(self.parameters)
         response = requests.get(requests_url, headers={
             'X-API-KEY': self.api_key})
 
         return Response(response.status_code, response.json())
 
-    def post(self, url):
+    def post(self, url, version=True):
         """
         Post request
         :return: Response
         """
-        requests_url = self.api_url + url
+        base_url = self.api_url + '/' + self.api_version if version else self.api_url
+        requests_url = base_url + url
         response = requests.post(requests_url, data=self.parameters, headers={
             'X-API-KEY': self.api_key})
 

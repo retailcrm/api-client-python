@@ -170,7 +170,7 @@ class Client(Base):
         code = str(field['code'])
         self.parameters['customField'] = json.dumps(field)
 
-        return self.post('/custom-fields/' + entity +  '/' + code + '/create')
+        return self.post('/custom-fields/' + entity + '/' + code + '/create')
 
     def customers(self, filters=None, limit=20, page=1):
         """
@@ -603,7 +603,6 @@ class Client(Base):
     def pack_edit(self, pack):
         """
         :param pack:
-        :param uid:
         :return: Response
         """
         self.parameters['pack'] = json.dumps(pack)
@@ -1072,4 +1071,6 @@ class Client(Base):
         :return: Response
         """
 
-        return self.post('/users/' + str(uid)) + '/' + status
+        self.parameters['status'] = status
+
+        return self.post('/users/' + str(uid) + '/status')

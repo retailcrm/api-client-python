@@ -8,14 +8,14 @@ import os
 from setuptools import setup
 
 
-def read(fname):
+def read(filename):
     """Read readme for long description"""
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    return open(os.path.join(os.path.dirname(__file__), filename)).read()
 
 
 setup(
     name='retailcrm',
-    version='5.0.2',
+    version='5.0.3',
     description='retailCRM API client',
     long_description=read('README'),
     url='https://github.com/retailcrm/api-client-python',
