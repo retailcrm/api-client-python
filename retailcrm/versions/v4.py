@@ -312,7 +312,6 @@ class Client(Base):
     def pack_edit(self, pack):
         """
         :param pack:
-        :param uid:
         :return: Response
         """
         self.parameters['pack'] = json.dumps(pack)
