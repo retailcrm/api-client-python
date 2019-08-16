@@ -899,12 +899,17 @@ class Client(Base):
 
         return self.get('/store/inventories')
 
-    def inventories_upload(self, offers):
+    def inventories_upload(self, offers, site=None):
         """
         :param offers:
+        :param site:
         :return: Response
         """
+        if site is not None:
+            self.parameters['site'] = site
+        
         self.parameters['offers'] = json.dumps(offers)
+
 
         return self.post('/store/inventories/upload')
 
