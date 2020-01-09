@@ -42,7 +42,7 @@ class Response(object):
         """
         :return: collection
         """
-        errors = {
-        } if not self.__response_body['errors'] else self.__response_body['errors']
+
+        errors = self.__response_body.get('errors', {})
 
         return errors
