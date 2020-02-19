@@ -30,7 +30,7 @@ class TestVersion3(unittest.TestCase):
             'https://epoqwieqwpoieqpwoeiqpwoeiq.retailcrm.ru', '98sdf9sj8fsd9fjs9dfjs98')
         response = client.statistic_update()
 
-        self.assertTrue(response.is_successful(), False)
+        self.assertIsNot(response.is_successful(), True)
         self.assertEqual(response.get_error_msg(), 'Account does not exist.')
 
     def test_wrong_api_key(self):
