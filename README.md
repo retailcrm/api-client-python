@@ -1,4 +1,5 @@
 [![Build Status](https://img.shields.io/travis/retailcrm/api-client-python/master.svg?style=flat-square)](https://travis-ci.org/retailcrm/api-client-python)
+[![Coverage](https://img.shields.io/codecov/c/gh/retailcrm/api-client-python/master.svg?style=flat-square)](https://codecov.io/gh/retailcrm/api-client-python)
 [![PyPI](https://img.shields.io/pypi/v/retailcrm.svg?style=flat-square)](https://pypi.python.org/pypi/retailcrm)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/retailcrm.svg?style=flat-square)](https://pypi.python.org/pypi/retailcrm)
 
