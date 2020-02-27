@@ -476,7 +476,7 @@ class Client(Base):
 
         return self.post('/orders/payments/' + str(uid) + '/delete')
 
-    def order_payment_edit(self, payment, uid_type='externalId', site=None):
+    def order_payment_edit(self, payment, uid_type='id', site=None):
         """
         :param payment: object
         :param uid_type: string
@@ -484,12 +484,9 @@ class Client(Base):
         :return: Response
         """
         self.parameters['payment'] = json.dumps(payment)
-
+        self.parameters['by'] = uid_type
         if site is not None:
             self.parameters['site'] = site
-
-        if uid_type != 'externalId':
-            self.parameters['by'] = uid_type
 
         return self.post('/orders/payments/' + str(payment[uid_type]) + '/edit')
 
