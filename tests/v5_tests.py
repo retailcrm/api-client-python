@@ -7,6 +7,7 @@ retailCRM API client v5 tests
 
 import unittest
 import os
+import random
 import retailcrm
 
 
@@ -72,3 +73,43 @@ class TestVersion5(unittest.TestCase):
 
         self.assertTrue(response.is_successful(), True)
         self.assertTrue(response.get_status_code() < 400, True)
+
+    def test_check_order_payment(self):
+        rand = random.randint(10000, 99999)
+        ex_id = 'test-case-payment' + str(rand)
+        order = {
+            'firstName': 'John',
+            'lastName': 'Doe',
+            'phone': '+79000000000',
+            'email': 'john@example.com',
+            'orderMethod': 'call-request',
+            'delivery': {
+                'code': 'self-delivery'
+            },
+            'payments': [
+                {
+                    'externalId': ex_id,
+                    'amount': 100,
+                    'type': 'cash'
+                }
+            ]
+        }
+
+        response = self.client.order_create(order)
+
+        response_data = response.get_response()
+        payment_id = response_data['order']['payments'][0]['id']
+        print(payment_id)
+
+        self.assertTrue(response.is_successful(), True)
+        self.assertTrue(response.get_status_code() < 400, True)
+
+        payment_response = self.client.order_payment_edit({'externalId': ex_id, 'status': 'invoice'}, 'externalId')
+
+        self.assertTrue(payment_response.is_successful(), True)
+        self.assertTrue(payment_response.get_status_code() < 400, True)
+
+        payment_response = self.client.order_payment_edit({'id': payment_id, 'status': 'paid'})
+
+        self.assertTrue(payment_response.is_successful(), True)
+        self.assertTrue(payment_response.get_status_code() < 400, True)
