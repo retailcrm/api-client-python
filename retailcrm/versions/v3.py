@@ -19,9 +19,9 @@ class Client(Base):
 
     def customers(self, filters=None, limit=20, page=1):
         """
-        :param filters:
-        :param limit:
-        :param page:
+        :param filters: object
+        :param limit: integer
+        :param page: integer
         :return: Response
         """
         self.parameters['filter'] = filters
@@ -32,8 +32,8 @@ class Client(Base):
 
     def customer_create(self, customer, site=None):
         """
-        :param customer:
-        :param site:
+        :param customer: object
+        :param site: string
         :return: Response
         """
         self.parameters['customer'] = json.dumps(customer)
@@ -45,8 +45,8 @@ class Client(Base):
 
     def customers_fix_external_ids(self, customers, site=None):
         """
-        :param customers:
-        :param site:
+        :param customers: object
+        :param site: string
         :return: Response
         """
         self.parameters['customers'] = json.dumps(customers)
@@ -58,8 +58,8 @@ class Client(Base):
 
     def customers_upload(self, customers, site=None):
         """
-        :param customers:
-        :param site:
+        :param customers: array of objects
+        :param site: string
         :return: Response
         """
         self.parameters['customers'] = json.dumps(customers)
@@ -71,9 +71,9 @@ class Client(Base):
 
     def customer(self, uid, uid_type='externalId', site=None):
         """
-        :param uid:
-        :param uid_type:
-        :param site:
+        :param uid: string
+        :param uid_type: string
+        :param site: string
         :return: Response
         """
         if uid_type != 'externalId':
@@ -86,9 +86,9 @@ class Client(Base):
 
     def customer_edit(self, customer, uid_type='externalId', site=None):
         """
-        :param customer:
-        :param uid_type:
-        :param site:
+        :param customer: object
+        :param uid_type: string
+        :param site: string
         :return: Response
         """
         self.parameters['customer'] = json.dumps(customer)
@@ -103,7 +103,7 @@ class Client(Base):
 
     def orders(self, filters=None, limit=20, page=1):
         """
-        :param filters: array
+        :param filters: object
         :param limit: integer
         :param page: integer
         :return: Response
@@ -142,11 +142,11 @@ class Client(Base):
 
     def orders_history(self, start=None, end=None, limit=100, offset=0, skip=True):
         """
-        :param start:
-        :param end:
-        :param limit:
-        :param offset:
-        :param skip:
+        :param start: DateTime
+        :param end: DateTime
+        :param limit: integer
+        :param offset: integer
+        :param skip: boolean
         :return: Response
         """
         self.parameters['startDate'] = start
@@ -215,9 +215,9 @@ class Client(Base):
 
     def packs(self, filters=None, limit=20, page=1):
         """
-        :param filters:
-        :param limit:
-        :param page:
+        :param filters: object
+        :param limit: integer
+        :param page: integer
         :return: Response
         """
         self.parameters['filter'] = filters
@@ -228,7 +228,7 @@ class Client(Base):
 
     def pack_create(self, pack):
         """
-        :param pack:
+        :param pack: object
         :return: Response
         """
         self.parameters['pack'] = json.dumps(pack)
@@ -237,9 +237,9 @@ class Client(Base):
 
     def packs_history(self, filters=None, limit=20, page=1):
         """
-        :param filters:
-        :param limit:
-        :param page:
+        :param filters: object
+        :param limit: integer
+        :param page: integer
         :return: Response
         """
         self.parameters['filter'] = filters
@@ -250,7 +250,7 @@ class Client(Base):
 
     def pack(self, uid):
         """
-        :param uid:
+        :param uid: integer
         :return: Response
         """
 
@@ -258,7 +258,7 @@ class Client(Base):
 
     def pack_delete(self, uid):
         """
-        :param uid:
+        :param uid: integer
         :return: Response
         """
 
@@ -266,7 +266,7 @@ class Client(Base):
 
     def pack_edit(self, pack):
         """
-        :param pack:
+        :param pack: object
         :return: Response
         """
         self.parameters['pack'] = json.dumps(pack)
@@ -289,7 +289,7 @@ class Client(Base):
 
     def delivery_services_edit(self, delivery_service):
         """
-        :param delivery_service:
+        :param delivery_service: object
         :return: Response
         """
         self.parameters['deliveryService'] = json.dumps(delivery_service)
@@ -305,7 +305,7 @@ class Client(Base):
 
     def delivery_types_edit(self, delivery_type):
         """
-        :param delivery_type:
+        :param delivery_type: object
         :return: Response
         """
         self.parameters['deliveryType'] = json.dumps(delivery_type)
@@ -322,7 +322,7 @@ class Client(Base):
     def order_methods_edit(self, order_method):
         """
 
-        :param order_method:
+        :param order_method: object
         :return: Response
         """
         self.parameters['orderMethod'] = json.dumps(order_method)
@@ -338,7 +338,7 @@ class Client(Base):
 
     def order_types_edit(self, order_type):
         """
-        :param order_type:
+        :param order_type: object
         :return: Response
         """
         self.parameters['orderType'] = json.dumps(order_type)
@@ -354,7 +354,7 @@ class Client(Base):
 
     def payment_statuses_edit(self, payment_status):
         """
-        :param payment_status:
+        :param payment_status: object
         :return: Response
         """
         self.parameters['paymentStatus'] = json.dumps(payment_status)
@@ -370,7 +370,7 @@ class Client(Base):
 
     def payment_types_edit(self, payment_type):
         """
-        :param payment_type:
+        :param payment_type: object
         :return: Response
         """
         self.parameters['paymentType'] = json.dumps(payment_type)
@@ -386,7 +386,7 @@ class Client(Base):
 
     def product_statuses_edit(self, product_status):
         """
-        :param product_status:
+        :param product_status: object
         :return: Response
         """
         self.parameters['productStatus'] = json.dumps(product_status)
@@ -402,7 +402,7 @@ class Client(Base):
 
     def sites_edit(self, site):
         """
-        :param site:
+        :param site: object
         :return: Response
         """
         self.parameters['site'] = json.dumps(site)
@@ -411,7 +411,7 @@ class Client(Base):
 
     def status_groups(self):
         """
-        :return
+        :return: Response
         """
 
         return self.get('/reference/status-groups')
@@ -425,7 +425,7 @@ class Client(Base):
 
     def statuses_edit(self, status):
         """
-        :param status:
+        :param status: object
         :return: Response
         """
         self.parameters['status'] = json.dumps(status)
@@ -441,18 +441,18 @@ class Client(Base):
 
     def stores_edit(self, store):
         """
-        :param store:
+        :param store: object
         :return: Response
         """
-        self.parameters['status'] = json.dumps(store)
+        self.parameters['store'] = json.dumps(store)
 
         return self.post('/reference/stores/' + store['code'] + '/edit')
 
     def inventories(self, filters=None, limit=20, page=1):
         """
-        :param filters:
-        :param limit:
-        :param page:
+        :param filters: object
+        :param limit: integer
+        :param page: integer
         :return: Response
         """
         self.parameters['filter'] = filters
@@ -463,8 +463,8 @@ class Client(Base):
 
     def inventories_upload(self, offers, site=None):
         """
-        :param offers:
-        :param site:
+        :param offers: array of objects
+        :param site: string
         :return: Response
         """
         if site is not None:
@@ -476,10 +476,10 @@ class Client(Base):
 
     def telephony_call_event(self, phone, call_type, code, status):
         """
-        :param phone:
-        :param call_type:
-        :param code:
-        :param status:
+        :param phone: string
+        :param call_type: string
+        :param code: string
+        :param status: string
         :return: Response
         """
         self.parameters['hangupStatus'] = status
@@ -491,7 +491,7 @@ class Client(Base):
 
     def telephony_calls_upload(self, calls):
         """
-        :param calls:
+        :param calls: array of objects
         :return: Response
         """
         self.parameters['calls'] = json.dumps(calls)
@@ -500,9 +500,9 @@ class Client(Base):
 
     def telephony_manager(self, phone, details=True):
         """
-        :param phone:
-        :param details:
-        :return: Response
+        :param phone: string
+        :param details: string
+        :return: Response string
         """
         self.parameters['phone'] = phone
         self.parameters['details'] = details
@@ -511,12 +511,12 @@ class Client(Base):
 
     def telephony_settings(self, code, client_id, make_call_url, active, name, image):
         """
-        :param code:
-        :param client_id:
-        :param make_call_url:
-        :param active:
-        :param name:
-        :param image:
+        :param code: string
+        :param client_id: string
+        :param make_call_url: string
+        :param active: string
+        :param name: string
+        :param image: string
         :return: Response
         """
         self.parameters['code'] = code
@@ -527,3 +527,10 @@ class Client(Base):
         self.parameters['image'] = image
 
         return self.post('/telephony/settings/' + str(code))
+
+    def statistic_update(self):
+        """
+        :return: Response
+        """
+        
+        return self.get('/statistic/update')
