@@ -77,5 +77,5 @@ result = client.task_create(task, site)
 
 ## Documentation
 
-* [English](http://www.retailcrm.pro/docs/Developers/Index)
-* [Russian](http://www.retailcrm.ru/docs/Developers/Index)
+* [English](https://help.retailcrm.pro/Developers/Index)
+* [Russian](https://help.retailcrm.ru/Developers/Index)
