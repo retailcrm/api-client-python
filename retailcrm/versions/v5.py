@@ -479,8 +479,12 @@ class Client(Base):
 
         return self.post('/customers-corporate/' + str(address[uid_type]) + '/addresses/create')
 
-
-    def customer_corporate_addresses_edit(self, uid_corporate, address, uid_type='externalId', entity_by='externalId', site=None):
+    def customer_corporate_addresses_edit(self,
+                                          uid_corporate,
+                                          address,
+                                          uid_type='externalId',
+                                          entity_by='externalId',
+                                          site=None):
         """
         :param address: object
         :param uid_corporate: string
@@ -493,14 +497,18 @@ class Client(Base):
 
         if uid_type != 'externalId':
             self.parameters['by'] = uid_type
-        
+
         if entity_by != 'externalId':
             self.parameters['entityBy'] = entity_by
 
         if site is not None:
             self.parameters['site'] = site
 
-        return self.post('/customers-corporate/' + str(uid_corporate) + '/addresses/' + str(address[entity_by]) + '/edit')
+        return self.post('/customers-corporate/' +
+                         str(uid_corporate) +
+                         '/addresses/' +
+                         str(address[entity_by]) +
+                         '/edit')
 
     def customer_corporate_companies(self, uid, uid_type='externalId', limit=20, page=1, filters=None, site=None):
         """
@@ -542,7 +550,12 @@ class Client(Base):
 
         return self.post('/customers-corporate/' + str(company[uid_type]) + '/companies/create')
 
-    def customer_corporate_companies_edit(self, uid_corporate, company, uid_type='externalId', entity_by='externalId', site=None):
+    def customer_corporate_companies_edit(self,
+                                          uid_corporate,
+                                          company,
+                                          uid_type='externalId',
+                                          entity_by='externalId',
+                                          site=None):
         """
         :param company: object
         :param uid_corporate: string
@@ -555,14 +568,15 @@ class Client(Base):
 
         if uid_type != 'externalId':
             self.parameters['by'] = uid_type
-        
+
         if entity_by != 'externalId':
             self.parameters['entityBy'] = entity_by
 
         if site is not None:
             self.parameters['site'] = site
 
-        return self.post('/customers-corporate/' + str(uid_corporate) + '/companies/' + str(company[entity_by]) + '/edit')
+        return self.post('/customers-corporate/' +
+                         str(uid_corporate) + '/companies/' + str(company[entity_by]) + '/edit')
 
     def customer_corporate_contacts(self, uid, uid_type='externalId', limit=20, page=1, filters=None, site=None):
         """
@@ -604,8 +618,12 @@ class Client(Base):
 
         return self.post('/customers-corporate/' + str(contact[uid_type]) + '/contacts/create')
 
-
-    def customer_corporate_contacts_edit(self, uid_corporate, contact, uid_type='externalId', entity_by='externalId', site=None):
+    def customer_corporate_contacts_edit(self,
+                                         uid_corporate,
+                                         contact,
+                                         uid_type='externalId',
+                                         entity_by='externalId',
+                                         site=None):
         """
         :param contact: object
         :param uid_corporate: string
@@ -618,14 +636,15 @@ class Client(Base):
 
         if uid_type != 'externalId':
             self.parameters['by'] = uid_type
-        
+
         if entity_by != 'externalId':
             self.parameters['entityBy'] = entity_by
 
         if site is not None:
             self.parameters['site'] = site
 
-        return self.post('/customers-corporate/' + str(uid_corporate) + '/contacts/' + str(contact[entity_by]) + '/edit')
+        return self.post('/customers-corporate/' +
+                         str(uid_corporate) + '/contacts/' + str(contact[entity_by]) + '/edit')
 
     def customer_corporate_edit(self, customer_corporate, uid_type='externalId', site=None):
         """
@@ -713,7 +732,7 @@ class Client(Base):
         self.parameters['page'] = page
 
         return self.get('/files')
-    
+
     def files_upload(self, file, site=None):
         """
         :param file: objects
@@ -1007,21 +1026,21 @@ class Client(Base):
 
         return self.post('/payment/check')
 
-    def payment_create_invoice(self, createInvoice):
+    def payment_create_invoice(self, create_invoice):
         """
-        :param createInvoice: object
+        :param create_invoice: object
         :return: Response
         """
-        self.parameters['createInvoice'] = json.dumps(createInvoice)
+        self.parameters['createInvoice'] = json.dumps(create_invoice)
 
         return self.post('/payment/create-invoice')
 
-    def payment_update_invoice(self, updateInvoice):
+    def payment_update_invoice(self, update_invoice):
         """
-        :param updateInvoice: object
+        :param update_invoice: object
         :return: Response
         """
-        self.parameters['updateInvoice'] = json.dumps(updateInvoice)
+        self.parameters['updateInvoice'] = json.dumps(update_invoice)
 
         return self.post('/payment/update-invoice')
 
@@ -1355,9 +1374,8 @@ class Client(Base):
         """
         if site is not None:
             self.parameters['site'] = site
-        
-        self.parameters['offers'] = json.dumps(offers)
 
+        self.parameters['offers'] = json.dumps(offers)
 
         return self.post('/store/inventories/upload')
 
@@ -1474,16 +1492,16 @@ class Client(Base):
 
         return self.post('/telephony/calls/upload')
 
-    def telephony_manager(self, phone, details=True, ignoreStatus=True):
+    def telephony_manager(self, phone, details=True, ignore_status=True):
         """
         :param phone: string
         :param details: string
-        :param ignoreStatus: string
-        :return: Response 
+        :param ignore_status: string
+        :return: Response
         """
         self.parameters['phone'] = phone
         self.parameters['details'] = details
-        self.parameters['ignoreStatus'] = ignoreStatus
+        self.parameters['ignoreStatus'] = ignore_status
 
         return self.get('/telephony/manager')
 

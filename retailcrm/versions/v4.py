@@ -592,16 +592,16 @@ class Client(Base):
 
         return self.post('/telephony/calls/upload')
 
-    def telephony_manager(self, phone, details=True, ignoreStatus=False):
+    def telephony_manager(self, phone, details=True, ignore_status=False):
         """
         :param phone: string
         :param details: string
-        :param ignoreStatus: string
+        :param ignore_status: string
         :return: Response
         """
         self.parameters['phone'] = phone
         self.parameters['details'] = details
-        self.parameters['ignoreStatus'] = ignoreStatus
+        self.parameters['ignoreStatus'] = ignore_status
 
         return self.get('/telephony/manager')
 
@@ -658,5 +658,5 @@ class Client(Base):
         """
         :return: Response
         """
-        
+
         return self.get('/statistic/update')

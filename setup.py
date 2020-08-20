@@ -15,7 +15,7 @@ def read(filename):
 
 setup(
     name='retailcrm',
-    version='5.0.3',
+    version='5.1.0',
     description='retailCRM API client',
     long_description=read('README'),
     url='https://github.com/retailcrm/api-client-python',
@@ -25,7 +25,7 @@ setup(
     license='MIT',
     packages=['retailcrm', 'retailcrm/versions'],
     package_data={},
-    install_requires=['requests', 'multidimensional_urlencode', 'nose'],
+    install_requires=['requests', 'multidimensional_urlencode', 'nose', 'coverage', 'pook', 'setuptools'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Other Environment',
@@ -38,6 +38,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3 :: Only',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ]

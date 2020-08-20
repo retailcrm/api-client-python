@@ -42,14 +42,14 @@ class TestVersion3(unittest.TestCase):
         'phones': [],
         'contragentType': 'individual'
     }
-    
+
     __order = {
         'slug': 5604,
         'summ': 0,
         'id': 5604,
         'number': '5604A',
         'externalId': '5603',
-        'orderType': 'tttt',
+        'orderType': 's789',
         'orderMethod': 'shopping-cart',
         'countryIso': 'RU',
         'createdAt': '2020-04-07 15:44:24',
@@ -101,10 +101,10 @@ class TestVersion3(unittest.TestCase):
                 'id': 5608
             },
             'offer': {
-                'externalId': 'xcxc55'
+                'externalId': 's789'
             }
         }
-    }   
+    }
 
     def setUp(self):
         """
@@ -112,10 +112,11 @@ class TestVersion3(unittest.TestCase):
         """
 
         self.client = retailcrm.v3(
-            os.getenv('RETAILCRM_URL'), os.getenv('RETAILCRM_KEY'))
+                os.getenv('RETAILCRM_URL'), os.getenv('RETAILCRM_KEY'))
 
-    def dictionaryEncode(self, key, dictonary):
-        return urlencode({key: json.dumps(dictonary)})
+    @staticmethod
+    def dictionaryEncode(key, dictionary):
+        return urlencode({key: json.dumps(dictionary)})
 
     @pook.on
     def test_wrong_api_url(self):
@@ -128,11 +129,11 @@ class TestVersion3(unittest.TestCase):
             .reply(404)
             .headers(self.__header)
             .json(
-                {                                         
+                {
                     'success': 'true',
                     'errorMsg': 'Account does not exist.'
                 }
-            )
+        )
         )
 
         client = retailcrm.v3('https://epoqq.retailcrm.ru', os.getenv('RETAILCRM_KEY'))
@@ -149,11 +150,11 @@ class TestVersion3(unittest.TestCase):
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/statistic/update')
-            .headers({'X-API-KEY': 'XXXX'})
-            .reply(200)
-            .headers(self.__header)
-            .json({'errorMsg': 'Wrong "apiKey" value.'})
-        )
+         .headers({'X-API-KEY': 'XXXX'})
+         .reply(200)
+         .headers(self.__header)
+         .json({'errorMsg': 'Wrong "apiKey" value.'})
+         )
 
         client = retailcrm.v3(os.getenv('RETAILCRM_URL'), 'XXXX')
         response = client.statistic_update()
@@ -168,11 +169,11 @@ class TestVersion3(unittest.TestCase):
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/statistic/update')
-            .headers({'X-API-KEY': None})
-            .reply(200)
-            .headers(self.__header)
-            .json({'errorMsg': '"apiKey" is missing.'})
-        )
+         .headers({'X-API-KEY': None})
+         .reply(200)
+         .headers(self.__header)
+         .json({'errorMsg': '"apiKey" is missing.'})
+         )
 
         client = retailcrm.v3(os.getenv('RETAILCRM_URL'), None)
         response = client.statistic_update()
@@ -187,11 +188,11 @@ class TestVersion3(unittest.TestCase):
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/api-versions')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true', 'versions': ['3.0', '4.0', '5.0']})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true', 'versions': ['3.0', '4.0', '5.0']})
+         )
 
         response = self.client.api_versions()
         pook.off()
@@ -205,12 +206,12 @@ class TestVersion3(unittest.TestCase):
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/credentials')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true', 'credentials': [], 'siteAccess': 'access_full'})
-        )
-        
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true', 'credentials': [], 'siteAccess': 'access_full'})
+         )
+
         response = self.client.api_credentials()
         pook.off()
 
@@ -235,10 +236,10 @@ class TestVersion3(unittest.TestCase):
                         'totalCount': 4342,
                         'currentPage': 1,
                         'totalPageCount': 87
-                        },
+                    },
                     'customers': [self.__customer]
                 }
-            )
+        )
         )
 
         response = self.client.customers({'bad': 'false', 'contragentType': 'individual'})
@@ -254,12 +255,12 @@ class TestVersion3(unittest.TestCase):
         """
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/customers/create')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('customer', self.__customer))
-            .reply(201)
-            .headers(self.__header)
-            .json({'success': 'true', 'id': 7777})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('customer', self.__customer))
+         .reply(201)
+         .headers(self.__header)
+         .json({'success': 'true', 'id': 7777})
+         )
 
         response = self.client.customer_create(self.__customer)
         pook.off()
@@ -274,12 +275,12 @@ class TestVersion3(unittest.TestCase):
         """
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/customers/fix-external-ids')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('customers', self.__customer['externalId']))
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('customers', self.__customer['externalId']))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.customers_fix_external_ids(self.__customer['externalId'])
         pook.off()
@@ -302,13 +303,13 @@ class TestVersion3(unittest.TestCase):
                 {
                     'success': 'true',
                     'uploadedCustomers': [
-                        {   
+                        {
                             'id': 9717,
                             'externalId': 'c-983344770'
                         }
                     ]
                 }
-            )  
+        )
         )
 
         response = self.client.customers_upload(self.__customer)
@@ -326,11 +327,11 @@ class TestVersion3(unittest.TestCase):
         uid = str(self.__customer['externalId'])
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/customers/' + uid)
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true', 'customers': self.__customer})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true', 'customers': self.__customer})
+         )
 
         response = self.client.customer(uid)
         pook.off()
@@ -347,19 +348,19 @@ class TestVersion3(unittest.TestCase):
         uid = str(self.__customer['externalId'])
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/customers/' + uid + '/edit')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('customer', self.__customer))
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true', 'id':  9717})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('customer', self.__customer))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true', 'id': 9717})
+         )
 
         response = self.client.customer_edit(self.__customer)
         pook.off()
 
         self.assertTrue(response.is_successful(), True)
         self.assertTrue(response.get_status_code() < 400, True)
-    
+
     @pook.on
     def test_orders(self):
         """
@@ -382,7 +383,7 @@ class TestVersion3(unittest.TestCase):
                     },
                     'orders': [self.__order]
                 }
-            )
+        )
         )
 
         response = self.client.orders({'bad': 'false', 'contragentType': 'individual'})
@@ -398,12 +399,12 @@ class TestVersion3(unittest.TestCase):
         """
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/orders/create')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('order', self.__order))
-            .reply(201)
-            .headers(self.__header)
-            .json({'success': 'true', 'id': 7777, 'order': self.__order})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('order', self.__order))
+         .reply(201)
+         .headers(self.__header)
+         .json({'success': 'true', 'id': 7777, 'order': self.__order})
+         )
 
         response = self.client.order_create(self.__order)
         pook.off()
@@ -418,12 +419,12 @@ class TestVersion3(unittest.TestCase):
         """
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/orders/fix-external-ids')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('orders', self.__order['externalId']))
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('orders', self.__order['externalId']))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.orders_fix_external_ids(self.__order['externalId'])
         pook.off()
@@ -434,11 +435,11 @@ class TestVersion3(unittest.TestCase):
     @pook.on
     def test_orders_history(self):
         """
-        V3 Test method orders_history 
+        V3 Test method orders_history
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/orders/history')
-            .headers({'X-API-KEY' : os.getenv('RETAILCRM_KEY')})
+            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
             .params({'startDate': '2020-01-07', 'endDate': '2020-04-12'})
             .reply(200)
             .headers(self.__header)
@@ -448,7 +449,7 @@ class TestVersion3(unittest.TestCase):
                     'generatedAt': '2020-04-12 15:44:24',
                     'orders': [self.__order]
                 }
-            )
+        )
         )
 
         response = self.client.orders_history('2020-01-07', '2020-04-12')
@@ -480,7 +481,7 @@ class TestVersion3(unittest.TestCase):
                         }
                     ]
                 }
-            )
+        )
         )
 
         response = self.client.orders_statuses([5604], [5603])
@@ -504,14 +505,14 @@ class TestVersion3(unittest.TestCase):
                 {
                     'success': 'true',
                     'uploadedOrders': [
-                        {   
+                        {
                             'id': 5604,
                             'externalId': '5603'
                         }
                     ],
                     'orders': [self.__order]
                 }
-            )  
+        )
         )
 
         response = self.client.orders_upload(self.__order)
@@ -529,11 +530,11 @@ class TestVersion3(unittest.TestCase):
         uid = str(self.__order['externalId'])
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/orders/' + uid)
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true', 'orders' : self.__order})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true', 'orders': self.__order})
+         )
 
         response = self.client.order(uid)
         pook.off()
@@ -550,12 +551,12 @@ class TestVersion3(unittest.TestCase):
         uid = str(self.__order['externalId'])
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/orders/' + uid + '/edit')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('order', self.__order))
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true', 'id': 5604, 'order': self.__order})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('order', self.__order))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true', 'id': 5604, 'order': self.__order})
+         )
 
         response = self.client.order_edit(self.__order)
         pook.off()
@@ -578,14 +579,14 @@ class TestVersion3(unittest.TestCase):
                 {
                     'success': 'true',
                     'pagination': {
-                            'limit': 20,
-                            'totalCount': 1,
-                            'currentPage': 1,
-                            'totalPageCount': 1
-                            },
-                    'packs' : [self.__pack]
+                        'limit': 20,
+                        'totalCount': 1,
+                        'currentPage': 1,
+                        'totalPageCount': 1
+                    },
+                    'packs': [self.__pack]
                 }
-            )
+        )
         )
 
         response = self.client.packs({'store': '7777z'})
@@ -601,12 +602,12 @@ class TestVersion3(unittest.TestCase):
         """
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/orders/packs/create')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('pack', {'store': '7777z', 'quantity': 1, 'itemId': 7632}))
-            .reply(201)
-            .headers(self.__header)
-            .json({'success': 'true', 'id': 7777})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('pack', {'store': '7777z', 'quantity': 1, 'itemId': 7632}))
+         .reply(201)
+         .headers(self.__header)
+         .json({'success': 'true', 'id': 7777})
+         )
 
         response = self.client.pack_create({'store': '7777z', 'quantity': 1, 'itemId': 7632})
         pook.off()
@@ -617,7 +618,7 @@ class TestVersion3(unittest.TestCase):
     @pook.on
     def test_packs_history(self):
         """
-        V3 Test method packs_history 
+        V3 Test method packs_history
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/orders/packs/history')
@@ -639,23 +640,23 @@ class TestVersion3(unittest.TestCase):
                                 'code': 'zzz'
                             },
                             'pack': {
-                                    'id': 678,
-                                    'quantity': 1,
-                                    'store': {'code': 'zzz'},
-                                    'item': {
-                                            'id': 222,
-                                            'order': {'id': 6677},
-                                            'offer': {'externalId': '333'}
-                                    }
+                                'id': 678,
+                                'quantity': 1,
+                                'store': {'code': 'zzz'},
+                                'item': {
+                                    'id': 222,
+                                    'order': {'id': 6677},
+                                    'offer': {'externalId': '333'}
+                                }
                             },
                             'source': 'api'
                         }
                     ]
-                }    
-            )
+                }
+        )
         )
 
-        response = self.client.packs_history({'startDate' : '2016-01-07', 'endDate' : '2020-04-12'})
+        response = self.client.packs_history({'startDate': '2016-01-07', 'endDate': '2020-04-12'})
         pook.off()
 
         self.assertTrue(response.is_successful(), True)
@@ -670,11 +671,11 @@ class TestVersion3(unittest.TestCase):
         uid = str(self.__pack['id'])
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/orders/packs/' + uid)
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true', 'pack': self.__pack})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true', 'pack': self.__pack})
+         )
 
         response = self.client.pack(uid)
         pook.off()
@@ -691,11 +692,11 @@ class TestVersion3(unittest.TestCase):
         uid = str(self.__pack['id'])
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/orders/packs/' + uid + '/delete')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.pack_delete(uid)
         pook.off()
@@ -712,12 +713,12 @@ class TestVersion3(unittest.TestCase):
         uid = str(self.__pack['id'])
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/orders/packs/' + uid + '/edit')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('pack', self.__pack))
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true', 'id': 5604})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('pack', self.__pack))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true', 'id': 5604})
+         )
 
         response = self.client.pack_edit(self.__pack)
         pook.off()
@@ -728,15 +729,15 @@ class TestVersion3(unittest.TestCase):
     @pook.on
     def test_countries(self):
         """
-        V3 Test method countries 
+        V3 Test method countries
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/reference/countries')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true', 'countriesIso': ['RU', 'UA', 'BY', 'KZ']})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true', 'countriesIso': ['RU', 'UA', 'BY', 'KZ']})
+         )
 
         response = self.client.countries()
         pook.off()
@@ -747,7 +748,7 @@ class TestVersion3(unittest.TestCase):
     @pook.on
     def test_delivery_services(self):
         """
-        V3 Test method delivery_services 
+        V3 Test method delivery_services
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/reference/delivery-services')
@@ -763,7 +764,7 @@ class TestVersion3(unittest.TestCase):
                             'code': '0tq6d'
                         },
                         'a080k': {
-                            'name': 'wmenw',
+                            'name': 's789',
                             'code': 'a080k'
                         },
                         'a6zgf': {
@@ -772,7 +773,7 @@ class TestVersion3(unittest.TestCase):
                         }
                     }
                 }
-            )
+        )
         )
 
         response = self.client.delivery_services()
@@ -787,15 +788,15 @@ class TestVersion3(unittest.TestCase):
         V3 Test method delivery_services_edit
         """
 
-        service = {'code': 'a080k', 'name': 'wmenw'}
+        service = {'code': 'a080k', 'name': 's789'}
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/reference/delivery-services/' + service['code'] + '/edit')
-            .headers({ 'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('deliveryService', service))
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('deliveryService', service))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.delivery_services_edit(service)
         pook.off()
@@ -806,11 +807,11 @@ class TestVersion3(unittest.TestCase):
     @pook.on
     def test_delivery_types(self):
         """
-        V3 Test method delivery_types 
+        V3 Test method delivery_types
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/reference/delivery-types')
-            .headers({ 'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
             .reply(201)
             .headers(self.__header)
             .json(
@@ -818,7 +819,7 @@ class TestVersion3(unittest.TestCase):
                     'success': 'true',
                     'deliveryTypes': {
                         '1kp52': {
-                            'name': '1cxub',
+                            'name': 's789',
                             'code': '1kp52',
                             'defaultCost': 300,
                             'defaultNetCost': 0,
@@ -829,9 +830,9 @@ class TestVersion3(unittest.TestCase):
                             'deliveryServices': [],
                             'defaultForCrm': 'false'
                         },
-                        'xhxij': {
+                        's789': {
                             'name': '1s0ei',
-                            'code': 'xhxij',
+                            'code': 's789',
                             'defaultCost': 300,
                             'defaultNetCost': 0,
                             'paymentTypes': [
@@ -843,7 +844,7 @@ class TestVersion3(unittest.TestCase):
                         }
                     }
                 }
-            )
+        )
         )
 
         response = self.client.delivery_types()
@@ -858,15 +859,15 @@ class TestVersion3(unittest.TestCase):
         V3 Test method delivery_types_edit
         """
 
-        delivery_type = {'code': 'xhxij', 'name': '1s0ei'}
+        delivery_type = {'code': 's789', 'name': '1s0ei'}
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/reference/delivery-types/' + delivery_type['code'] + '/edit')
-            .headers({ 'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('deliveryType', delivery_type))       
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('deliveryType', delivery_type))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.delivery_types_edit(delivery_type)
         pook.off()
@@ -877,7 +878,7 @@ class TestVersion3(unittest.TestCase):
     @pook.on
     def test_order_methods(self):
         """
-        V3 Test method order_methods 
+        V3 Test method order_methods
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/reference/order-methods')
@@ -896,22 +897,22 @@ class TestVersion3(unittest.TestCase):
                             'isFromPos': 'false'
                         },
                         '44cmd': {
-                                'name': '1tdf4',
-                                'code': '44cmd',
-                                'defaultForCrm': 'false',
-                                'defaultForApi': 'false',
-                                'isFromPos': 'false'
+                            'name': '1tdf4',
+                            'code': '44cmd',
+                            'defaultForCrm': 'false',
+                            'defaultForApi': 'false',
+                            'isFromPos': 'false'
                         },
                         'zoc5q': {
-                                'name': '1y0cp',
-                                'code': 'zoc5q',
-                                'defaultForCrm': 'false',
-                                'defaultForApi': 'false',
-                                'isFromPos': 'false'
+                            'name': '1y0cp',
+                            'code': 'zoc5q',
+                            'defaultForCrm': 'false',
+                            'defaultForApi': 'false',
+                            'isFromPos': 'false'
                         }
                     }
                 }
-            )
+        )
         )
 
         response = self.client.order_methods()
@@ -929,12 +930,12 @@ class TestVersion3(unittest.TestCase):
         method = {'code': 'zoc5q', 'name': '1y0cp'}
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/reference/order-methods/' + method['code'] + '/edit')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('orderMethod', method)) 
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('orderMethod', method))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.order_methods_edit(method)
         pook.off()
@@ -956,9 +957,9 @@ class TestVersion3(unittest.TestCase):
                 {
                     'success': 'true',
                     'orderTypes': {
-                        'tttt': {
+                        's789': {
                             'name': 'test',
-                            'code': 'tttt',
+                            'code': 's789',
                             'defaultForCrm': 'true',
                             'defaultForApi': 'true',
                             'ordering': 990
@@ -972,7 +973,7 @@ class TestVersion3(unittest.TestCase):
                         }
                     }
                 }
-            )
+        )
         )
 
         response = self.client.order_types()
@@ -987,15 +988,15 @@ class TestVersion3(unittest.TestCase):
         V3 Test method order_types_edit
         """
 
-        order_type = {'code': 'tttt', 'name': 'test'}
+        order_type = {'code': 's789', 'name': 'test'}
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/reference/order-types/' + order_type['code'] + '/edit')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')}) 
-            .body(self.dictionaryEncode('orderType', order_type))            
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('orderType', order_type))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.order_types_edit(order_type)
         pook.off()
@@ -1006,11 +1007,11 @@ class TestVersion3(unittest.TestCase):
     @pook.on
     def test_payment_statuses(self):
         """
-        V3 Test method payment_statuses 
+        V3 Test method payment_statuses
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/reference/payment-statuses')
-            .headers({ 'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
             .reply(200)
             .headers(self.__header)
             .json(
@@ -1049,7 +1050,7 @@ class TestVersion3(unittest.TestCase):
                         }
                     }
                 }
-            )
+        )
         )
 
         response = self.client.payment_statuses()
@@ -1067,12 +1068,12 @@ class TestVersion3(unittest.TestCase):
         status = {'code': 'payment-start', 'name': 'Платеж проведен'}
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/reference/payment-statuses/' + status['code'] + '/edit')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('paymentStatus', status)) 
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('paymentStatus', status))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.payment_statuses_edit(status)
         pook.off()
@@ -1083,7 +1084,7 @@ class TestVersion3(unittest.TestCase):
     @pook.on
     def test_payment_types(self):
         """
-        V3 Test method payment_types 
+        V3 Test method payment_types
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/reference/payment-types')
@@ -1112,7 +1113,7 @@ class TestVersion3(unittest.TestCase):
                         }
                     }
                 }
-            )
+        )
         )
 
         response = self.client.payment_types()
@@ -1130,12 +1131,12 @@ class TestVersion3(unittest.TestCase):
         payment_type = {'code': '238c06', 'name': 'TestPaymentType-238c06'}
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/reference/payment-types/' + payment_type['code'] + '/edit')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('paymentType', payment_type))            
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('paymentType', payment_type))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.payment_types_edit(payment_type)
         pook.off()
@@ -1146,7 +1147,7 @@ class TestVersion3(unittest.TestCase):
     @pook.on
     def test_product_statuses(self):
         """
-        V3 Test method product_statuses 
+        V3 Test method product_statuses
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/reference/product-statuses')
@@ -1173,7 +1174,7 @@ class TestVersion3(unittest.TestCase):
                         }
                     }
                 }
-            )
+        )
         )
 
         response = self.client.product_statuses()
@@ -1191,12 +1192,12 @@ class TestVersion3(unittest.TestCase):
         status = {'code': 'in-reserve', 'name': 'В резерве'}
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/reference/product-statuses/' + status['code'] + '/edit')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('productStatus', status))            
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('productStatus', status))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.product_statuses_edit(status)
         pook.off()
@@ -1231,7 +1232,7 @@ class TestVersion3(unittest.TestCase):
                         }
                     }
                 }
-            )
+        )
         )
 
         response = self.client.sites()
@@ -1249,12 +1250,12 @@ class TestVersion3(unittest.TestCase):
         site = {'code': 'code', 'name': 'XXX'}
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/reference/sites/' + site['code'] + '/edit')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('site', site))         
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('site', site))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.sites_edit(site)
         pook.off()
@@ -1300,7 +1301,7 @@ class TestVersion3(unittest.TestCase):
                         }
                     }
                 }
-            )
+        )
         )
 
         response = self.client.status_groups()
@@ -1337,7 +1338,7 @@ class TestVersion3(unittest.TestCase):
                         }
                     }
                 }
-            )
+        )
         )
 
         response = self.client.statuses()
@@ -1355,12 +1356,12 @@ class TestVersion3(unittest.TestCase):
         status = {'code': 'new', 'name': 'Новый'}
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/reference/statuses/' + status['code'] + '/edit')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('status', status)) 
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('status', status))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.statuses_edit(status)
         pook.off()
@@ -1392,11 +1393,11 @@ class TestVersion3(unittest.TestCase):
                             'type': 'store-type-warehouse',
                             'inventoryType': 'integer',
                             'code': 'q6w5i',
-                            'name': 'uutgj'
+                            'name': 's789'
                         }
                     ]
                 }
-            )
+        )
         )
 
         response = self.client.stores()
@@ -1411,15 +1412,15 @@ class TestVersion3(unittest.TestCase):
         V3 Test method stores_edit
         """
 
-        store = {'code': 'q6w5i', 'name': 'uutgj'}
+        store = {'code': 'q6w5i', 'name': 's789'}
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/reference/stores/' + store['code'] + '/edit')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('store', store)) 
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(self.dictionaryEncode('store', store))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.stores_edit(store)
         pook.off()
@@ -1435,13 +1436,13 @@ class TestVersion3(unittest.TestCase):
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v3/store/inventories')
             .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .params({'filter[site]' : 'https://help.ru'})
+            .params({'filter[site]': 'https://help.ru'})
             .reply(200)
             .headers(self.__header)
             .json(
                 {
                     'success': 'true',
-                    'pagination': 
+                    'pagination':
                         {
                             'limit': 20,
                             'totalCount': 34,
@@ -1460,10 +1461,9 @@ class TestVersion3(unittest.TestCase):
                         {
                             'externalId': '33',
                             'quantity': 0
-                        }
-                    ]
+                        }]
                 }
-            )
+        )
         )
 
         response = self.client.inventories({'site': 'https://help.ru'})
@@ -1471,7 +1471,7 @@ class TestVersion3(unittest.TestCase):
 
         self.assertTrue(response.is_successful(), True)
         self.assertTrue(response.get_status_code() < 400, True)
-    
+
     @pook.on
     def test_inventories_upload(self):
         """
@@ -1480,7 +1480,7 @@ class TestVersion3(unittest.TestCase):
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/store/inventories/upload')
             .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('offers', {'externalId': 'wenw', 'id': 5603}))
+            .body(self.dictionaryEncode('offers', {'externalId': 's789', 'id': 5603}))
             .reply(200)
             .headers(self.__header)
             .json(
@@ -1488,14 +1488,14 @@ class TestVersion3(unittest.TestCase):
                     'success': 'true',
                     'processedOffersCount': 0,
                     'notFoundOffers': {
-                        'externalId': 'wenw',
+                        'externalId': 's789',
                         'xmlId': 9999
                     }
                 }
-            )  
+        )
         )
 
-        response = self.client.inventories_upload({'externalId': 'wenw', 'id': 5603})
+        response = self.client.inventories_upload({'externalId': 's789', 'id': 5603})
         pook.off()
 
         self.assertTrue(response.is_successful(), True)
@@ -1508,21 +1508,20 @@ class TestVersion3(unittest.TestCase):
         """
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/telephony/call/event')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(urlencode(
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(urlencode(
                 {
-                    'hangupStatus': 'busy', 
+                    'hangupStatus': 'busy',
                     'phone': '+799999999',
                     'code': 'c2321',
                     'type': 'hangup'
-                })
-            )
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})  
-        )
+                }))
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
-        response = self.client.telephony_call_event('+799999999', 'hangup', 'c2321', 'busy')   
+        response = self.client.telephony_call_event('+799999999', 'hangup', 'c2321', 'busy')
         pook.off()
 
         self.assertTrue(response.is_successful(), True)
@@ -1536,7 +1535,7 @@ class TestVersion3(unittest.TestCase):
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/telephony/calls/upload')
             .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(self.dictionaryEncode('calls', {})) 
+            .body(self.dictionaryEncode('calls', {}))
             .reply(200)
             .headers(self.__header)
             .json(
@@ -1545,10 +1544,10 @@ class TestVersion3(unittest.TestCase):
                     'processedCallsCount': 5555,
                     'duplicateCalls': []
                 }
-            )  
+        )
         )
 
-        response = self.client.telephony_calls_upload({})   
+        response = self.client.telephony_calls_upload({})
         pook.off()
 
         self.assertTrue(response.is_successful(), True)
@@ -1569,19 +1568,19 @@ class TestVersion3(unittest.TestCase):
                 {
                     'success': 'true',
                     'manager': {
-                        'id': 777,                   
+                        'id': 777,
                         'firstName': 'yyy',
                         'lastName': 'xxxx',
-                        'patronymic': 'qwer',
+                        'patronymic': 's789',
                         'email': 'mail@retailcrm.ru',
                         'code': 'ccc7'
                     },
                     'customer': {
                         'id': 888,
-                        'externalId': '5406',                   
+                        'externalId': '5406',
                         'firstName': 'ccc',
-                        'lastName': 'zzzz',
-                        'patronymic': 'asdf',
+                        'lastName': 's789',
+                        'patronymic': 's789',
                         'email': 'mail@retailcrm.ru',
                         'code': 'ccc7',
                         'phones': [{'number': '+71111111111'}]
@@ -1591,16 +1590,16 @@ class TestVersion3(unittest.TestCase):
                         'lastOrderLink': 'https://lastOrderLink.ru',
                         'newCustomerLink': 'https://newCustomerLink.ru',
                         'customerLink': 'https://customerLink.ru',
-                    }        
+                    }
                 }
-            )
+        )
         )
 
         response = self.client.telephony_manager('+79999999999')
         pook.off()
 
         self.assertTrue(response.is_successful(), True)
-        self.assertTrue(response.get_status_code() < 400, True) 
+        self.assertTrue(response.get_status_code() < 400, True)
 
     @pook.on
     def test_telephony_settings(self):
@@ -1611,24 +1610,22 @@ class TestVersion3(unittest.TestCase):
         code = 'xxx'
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/telephony/settings/' + code)
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .body(urlencode(
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .body(urlencode(
                 {
-                    'code': code, 
+                    'code': code,
                     'clientId': '123x',
                     'makeCallUrl': 'url',
                     'active': 'active',
                     'name': 'name',
                     'image': 'url_image'
-                    }
-                )
-            )
-            .reply(201)
-            .headers(self.__header)
-            .json({'success': 'true'})  
-        )
+                }))
+         .reply(201)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
-        response = self.client.telephony_settings(code, '123x', 'url', 'active', 'name', 'url_image')   
+        response = self.client.telephony_settings(code, '123x', 'url', 'active', 'name', 'url_image')
         pook.off()
 
         self.assertTrue(response.is_successful(), True)
@@ -1639,13 +1636,13 @@ class TestVersion3(unittest.TestCase):
         """
         V3 Test method statistic_update
         """
-        
+
         (pook.get(os.getenv('RETAILCRM_URL') + '/statistic/update')
-            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .reply(200)
-            .headers(self.__header)
-            .json({'success': 'true'})
-        )
+         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+         .reply(200)
+         .headers(self.__header)
+         .json({'success': 'true'})
+         )
 
         response = self.client.statistic_update()
         pook.off()
