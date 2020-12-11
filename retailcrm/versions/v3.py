@@ -10,7 +10,7 @@ from retailcrm.versions.base import Base
 
 
 class Client(Base):
-    """retailCRM API client"""
+    """RetailCRM API client"""
 
     apiVersion = 'v3'
 

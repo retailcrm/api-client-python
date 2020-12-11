@@ -2,7 +2,7 @@
 
 
 """
-retailCRM API client v3 tests
+RetailCRM API client v3 tests
 """
 
 from urllib.parse import urlencode
@@ -124,7 +124,7 @@ class TestVersion3(unittest.TestCase):
         V3 Test wrong api url
         """
 
-        (pook.get('https://epoqq.retailcrm.ru' + '/api/v3/statistic/update')
+        (pook.get('https://epoqq.retailcrm.pro' + '/api/v3/statistic/update')
             .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
             .reply(404)
             .headers(self.__header)
@@ -136,7 +136,7 @@ class TestVersion3(unittest.TestCase):
         )
         )
 
-        client = retailcrm.v3('https://epoqq.retailcrm.ru', os.getenv('RETAILCRM_KEY'))
+        client = retailcrm.v3('https://epoqq.retailcrm.pro', os.getenv('RETAILCRM_KEY'))
         response = client.statistic_update()
         pook.off()
 
@@ -1572,7 +1572,7 @@ class TestVersion3(unittest.TestCase):
                         'firstName': 'yyy',
                         'lastName': 'xxxx',
                         'patronymic': 's789',
-                        'email': 'mail@retailcrm.ru',
+                        'email': 'mail@retailcrm.pro',
                         'code': 'ccc7'
                     },
                     'customer': {
@@ -1581,7 +1581,7 @@ class TestVersion3(unittest.TestCase):
                         'firstName': 'ccc',
                         'lastName': 's789',
                         'patronymic': 's789',
-                        'email': 'mail@retailcrm.ru',
+                        'email': 'mail@retailcrm.pro',
                         'code': 'ccc7',
                         'phones': [{'number': '+71111111111'}]
                     },
