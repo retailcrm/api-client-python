@@ -2,7 +2,7 @@
 
 
 """
-retailCRM API client v5 tests
+RetailCRM API client v5 tests
 """
 
 from urllib.parse import urlencode
@@ -202,7 +202,7 @@ class TestVersion5(unittest.TestCase):
         V5 Test wrong api url
         """
 
-        (pook.get('https://epoqq.retailcrm.ru' + '/api/v5/statistic/update')
+        (pook.get('https://epoqq.retailcrm.pro' + '/api/v5/statistic/update')
             .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
             .reply(404)
             .headers(self.__header)
@@ -214,7 +214,7 @@ class TestVersion5(unittest.TestCase):
         )
         )
 
-        client = retailcrm.v5('https://epoqq.retailcrm.ru', os.getenv('RETAILCRM_KEY'))
+        client = retailcrm.v5('https://epoqq.retailcrm.pro', os.getenv('RETAILCRM_KEY'))
         response = client.statistic_update()
         pook.off()
 
@@ -4020,7 +4020,7 @@ class TestVersion5(unittest.TestCase):
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v5/store/inventories')
             .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .params({'filter[site]': 'https://retailcrm.ru'})
+            .params({'filter[site]': 'https://retailcrm.pro'})
             .reply(200)
             .headers(self.__header)
             .json(
@@ -4036,13 +4036,13 @@ class TestVersion5(unittest.TestCase):
                         {
                             'id': 33937,
                             'externalId': '89387',
-                            'site': 'https://retailcrm.ru',
+                            'site': 'https://retailcrm.pro',
                             'quantity': 102
                         },
                         {
                             'id': 33933,
                             'externalId': '46',
-                            'site': 'https://retailcrm.ru',
+                            'site': 'https://retailcrm.pro',
                             'quantity': 0
                         }
                     ]
@@ -4050,7 +4050,7 @@ class TestVersion5(unittest.TestCase):
         )
         )
 
-        response = self.client.inventories({'site': 'https://retailcrm.ru'})
+        response = self.client.inventories({'site': 'https://retailcrm.pro'})
         pook.off()
 
         self.assertTrue(response.is_successful(), True)
@@ -4477,7 +4477,7 @@ class TestVersion5(unittest.TestCase):
                         'firstName': 'John',
                         'lastName': 'Doe',
                         'patronymic': 'H.',
-                        'email': 'mail@retailcrm.ru',
+                        'email': 'mail@retailcrm.pro',
                         'code': 'ccc7'
                     },
                     'customer': {
@@ -4486,7 +4486,7 @@ class TestVersion5(unittest.TestCase):
                         'firstName': 'John',
                         'lastName': 'Doe',
                         'patronymic': 'H.',
-                        'email': 'mail@retailcrm.ru',
+                        'email': 'mail@retailcrm.pro',
                         'code': 'ccc7',
                         'phones': [{'number': '+71111111111'}]
                     },
@@ -4583,7 +4583,7 @@ class TestVersion5(unittest.TestCase):
                             'id': 777,
                             'createdAt': '2020-04-05 11:23:46',
                             'active': 'true',
-                            'email': 'mail@retailcrm.ru',
+                            'email': 'mail@retailcrm.pro',
                             'firstName': 'yyy',
                             'lastName': 'xxxx',
                             'status': 'free',
@@ -4622,7 +4622,7 @@ class TestVersion5(unittest.TestCase):
                         'id': 777,
                         'createdAt': '2020-04-05 11:23:46',
                         'active': 'true',
-                        'email': 'mail@retailcrm.ru',
+                        'email': 'mail@retailcrm.pro',
                         'firstName': 'yyy',
                         'lastName': 'xxxx',
                         'status': 'free',

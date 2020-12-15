@@ -1,13 +1,13 @@
-[![Build Status](https://img.shields.io/travis/retailcrm/api-client-python/master.svg?style=flat-square)](https://travis-ci.org/retailcrm/api-client-python)
-[![Coverage](https://img.shields.io/codecov/c/gh/retailcrm/api-client-python/master.svg?style=flat-square)](https://codecov.io/gh/retailcrm/api-client-python)
-[![PyPI](https://img.shields.io/pypi/v/retailcrm.svg?style=flat-square)](https://pypi.python.org/pypi/retailcrm)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/retailcrm.svg?style=flat-square)](https://pypi.python.org/pypi/retailcrm)
+[![Build Status](https://img.shields.io/travis/retailcrm/api-client-python/master.svg)](https://travis-ci.org/retailcrm/api-client-python)
+[![Coverage](https://img.shields.io/codecov/c/gh/retailcrm/api-client-python/master.svg?logo=codecov&logoColor=white)](https://codecov.io/gh/retailcrm/api-client-python)
+[![PyPI](https://img.shields.io/pypi/v/retailcrm.svg?logo=pypi&logoColor=white)](https://pypi.python.org/pypi/retailcrm)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/retailcrm.svg?logo=python&logoColor=white)](https://pypi.python.org/pypi/retailcrm)
 
 
-retailCRM python API client
+RetailCRM python API client
 ===========================
 
-This is python retailCRM API client. This library allows to use all available API versions.
+This is python RetailCRM API client. This library allows to use all available API versions.
 
 ## Install
 
@@ -25,7 +25,7 @@ pip install retailcrm
 import retailcrm
 
 
-client = retailcrm.v3('https://demo.retailcrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
+client = retailcrm.v3('https://demo.retailcrm.pro', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
 
 order = {
   'firstName': 'John',
@@ -46,7 +46,7 @@ result = client.order_create(order)
 import retailcrm
 
 
-client = retailcrm.v4('https://demo.retailcrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
+client = retailcrm.v4('https://demo.retailcrm.pro', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
 
 result = client.customers_history(filter={'sinceId': '1500', 'startDate': '2018-03-01'})
 
@@ -61,7 +61,7 @@ print(result['pagination']['totalCount'])
 import retailcrm
 
 
-client = retailcrm.v5('https://demo.retailcrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
+client = retailcrm.v5('https://demo.retailcrm.pro', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
 site = 'example-com'
 task = {
   'text': 'Product availability problem',
@@ -74,8 +74,3 @@ task = {
 
 result = client.task_create(task, site)
 ```
-
-## Documentation
-
-* [English](https://help.retailcrm.pro/Developers/Index)
-* [Russian](https://help.retailcrm.ru/Developers/Index)

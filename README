@@ -1,7 +1,7 @@
-retailCRM python API client
+RetailCRM python API client
 ===========================
 
-This is python retailCRM API client. This library allows to use all
+This is python RetailCRM API client. This library allows to use all
 available API versions.
 
 Install
@@ -22,7 +22,7 @@ Usage
     import retailcrm
 
 
-    client = retailcrm.v3('https://demo.retailcrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
+    client = retailcrm.v3('https://demo.retailcrm.pro', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
 
     order = {
       'firstName': 'John',
@@ -42,7 +42,7 @@ Usage
     import retailcrm
 
 
-    client = retailcrm.v4('https://demo.retailcrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
+    client = retailcrm.v4('https://demo.retailcrm.pro', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
 
     result = client.customers_history(filter={'sinceId': '1500', 'startDate': '2018-03-01'})
 
@@ -56,7 +56,7 @@ Usage
     import retailcrm
 
 
-    client = retailcrm.v5('https://demo.retailcrm.ru', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
+    client = retailcrm.v5('https://demo.retailcrm.pro', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
     site = 'example-com'
     task = {
       'text': 'Product availability problem',
@@ -68,12 +68,3 @@ Usage
     }
 
     result = client.task_create(task, site)
-
-Documentation
--------------
-
--  `English`_
--  `Russian`_
-
-.. _English: https://help.retailcrm.pro/Developers/Index
-.. _Russian: https://help.retailcrm.ru/Developers/Index

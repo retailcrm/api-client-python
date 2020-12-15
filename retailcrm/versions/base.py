@@ -11,7 +11,7 @@ from retailcrm.response import Response
 
 
 class Base(object):
-    """retailCRM API client"""
+    """RetailCRM API client"""
 
     def __init__(self, crm_url, api_key, version):
         self.api_url = crm_url + '/api'

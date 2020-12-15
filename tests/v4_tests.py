@@ -2,7 +2,7 @@
 
 
 """
-retailCRM API client v4 tests
+RetailCRM API client v4 tests
 """
 
 from urllib.parse import urlencode
@@ -120,7 +120,7 @@ class TestVersion4(unittest.TestCase):
         V4 Test wrong api url
         """
 
-        (pook.get('https://epoqq.retailcrm.ru' + '/api/v4/statistic/update')
+        (pook.get('https://epoqq.retailcrm.pro' + '/api/v4/statistic/update')
             .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
             .reply(404)
             .headers(self.__header)
@@ -132,7 +132,7 @@ class TestVersion4(unittest.TestCase):
         )
         )
 
-        client = retailcrm.v4('https://epoqq.retailcrm.ru', os.getenv('RETAILCRM_KEY'))
+        client = retailcrm.v4('https://epoqq.retailcrm.pro', os.getenv('RETAILCRM_KEY'))
         response = client.statistic_update()
         pook.off()
 
@@ -1690,7 +1690,7 @@ class TestVersion4(unittest.TestCase):
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v4/store/inventories')
             .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-            .params({'filter[site]': 'https://retailcrm.ru'})
+            .params({'filter[site]': 'https://retailcrm.pro'})
             .reply(200)
             .headers(self.__header)
             .json(
@@ -1706,13 +1706,13 @@ class TestVersion4(unittest.TestCase):
                         {
                             'id': 33937,
                             'externalId': 'werew',
-                            'site': 'https://retailcrm.ru',
+                            'site': 'https://retailcrm.pro',
                             'quantity': 102
                         },
                         {
                             'id': 33933,
                             'externalId': '46',
-                            'site': 'https://retailcrm.ru',
+                            'site': 'https://retailcrm.pro',
                             'quantity': 0
                         }
                     ]
@@ -1720,7 +1720,7 @@ class TestVersion4(unittest.TestCase):
         )
         )
 
-        response = self.client.inventories({'site': 'https://retailcrm.ru'})
+        response = self.client.inventories({'site': 'https://retailcrm.pro'})
         pook.off()
 
         self.assertTrue(response.is_successful(), True)
@@ -1981,7 +1981,7 @@ class TestVersion4(unittest.TestCase):
                         'firstName': 'yyy',
                         'lastName': 'xxxx',
                         'patronymic': 'www',
-                        'email': 'mail@retailcrm.ru',
+                        'email': 'mail@retailcrm.pro',
                         'code': 'ccc7'
                     },
                     'customer': {
@@ -1990,7 +1990,7 @@ class TestVersion4(unittest.TestCase):
                         'firstName': 'ccc',
                         'lastName': 'zzz',
                         'patronymic': 'sss',
-                        'email': 'mail@retailcrm.ru',
+                        'email': 'mail@retailcrm.pro',
                         'code': 'ccc7',
                         'phones': [{'number': '+71111111111'}]
                     },
@@ -2027,7 +2027,7 @@ class TestVersion4(unittest.TestCase):
                 {
                     'success': 'true',
                     'configuration': {
-                        'makeCallUrl': 'https://retailcrm.ru',
+                        'makeCallUrl': 'https://retailcrm.pro',
                         'allowEdit': 'false',
                         'inputEventSupported': 'false',
                         'outputEventSupported': 'false',
@@ -2056,7 +2056,7 @@ class TestVersion4(unittest.TestCase):
         configuration = {
             'code': 'www',
             'clientId': '5604',
-            'makeCallUrl': 'https://retailcrm.ru'
+            'makeCallUrl': 'https://retailcrm.pro'
         }
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v4/telephony/setting/' + configuration['code'] + '/edit')
@@ -2150,7 +2150,7 @@ class TestVersion4(unittest.TestCase):
                             'id': 777,
                             'createdAt': '2020-04-05 11:23:46',
                             'active': 'true',
-                            'email': 'mail@retailcrm.ru',
+                            'email': 'mail@retailcrm.pro',
                             'firstName': 'yyy',
                             'lastName': 'xxxx',
                             'status': 'free',
@@ -2189,7 +2189,7 @@ class TestVersion4(unittest.TestCase):
                         'id': 777,
                         'createdAt': '2020-04-05 11:23:46',
                         'active': 'true',
-                        'email': 'mail@retailcrm.ru',
+                        'email': 'mail@retailcrm.pro',
                         'firstName': 'yyy',
                         'lastName': 'xxxx',
                         'status': 'free',
