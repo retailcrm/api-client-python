@@ -7,7 +7,7 @@
 RetailCRM python API client
 ===========================
 
-This is python RetailCRM API client. This library allows to use all available API versions.
+This is Python RetailCRM API client. This library allows to use all available API versions.
 
 ## Install
 
