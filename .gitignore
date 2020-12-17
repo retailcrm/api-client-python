@@ -6,3 +6,6 @@
 /venv/
 /.vscode/
 /build/
+.python-version
+.coverage
+coverage.xml

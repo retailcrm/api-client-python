@@ -504,11 +504,15 @@ class Client(Base):
         if site is not None:
             self.parameters['site'] = site
 
-        return self.post('/customers-corporate/' +
-                         str(uid_corporate) +
-                         '/addresses/' +
-                         str(address[entity_by]) +
-                         '/edit')
+        return self.post("".join(
+            [
+                '/customers-corporate/',
+                str(uid_corporate),
+                '/addresses/',
+                str(address[entity_by]),
+                '/edit'
+            ]
+        ))
 
     def customer_corporate_companies(self, uid, uid_type='externalId', limit=20, page=1, filters=None, site=None):
         """
@@ -575,8 +579,7 @@ class Client(Base):
         if site is not None:
             self.parameters['site'] = site
 
-        return self.post('/customers-corporate/' +
-                         str(uid_corporate) + '/companies/' + str(company[entity_by]) + '/edit')
+        return self.post('/customers-corporate/' + str(uid_corporate) + '/companies/' + str(company[entity_by]) + '/edit')
 
     def customer_corporate_contacts(self, uid, uid_type='externalId', limit=20, page=1, filters=None, site=None):
         """
@@ -643,8 +646,7 @@ class Client(Base):
         if site is not None:
             self.parameters['site'] = site
 
-        return self.post('/customers-corporate/' +
-                         str(uid_corporate) + '/contacts/' + str(contact[entity_by]) + '/edit')
+        return self.post('/customers-corporate/' + str(uid_corporate) + '/contacts/' + str(contact[entity_by]) + '/edit')
 
     def customer_corporate_edit(self, customer_corporate, uid_type='externalId', site=None):
         """
