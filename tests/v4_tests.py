@@ -107,8 +107,7 @@ class TestVersion4(unittest.TestCase):
         Setup
         """
 
-        self.client = retailcrm.v4(
-                os.getenv('RETAILCRM_URL'), os.getenv('RETAILCRM_KEY'))
+        self.client = retailcrm.v4(os.getenv('RETAILCRM_URL'), os.getenv('RETAILCRM_KEY'))
 
     @staticmethod
     def dictionaryEncode(key, dictionary):
@@ -310,11 +309,11 @@ class TestVersion4(unittest.TestCase):
         )
 
         response = self.client.customers_history(
-                {
-                    'sinceId': '1111',
-                    'startDate': '2016-01-07',
-                    'endDate': '2020-04-12'
-                }
+            {
+                'sinceId': '1111',
+                'startDate': '2016-01-07',
+                'endDate': '2020-04-12'
+            }
         )
         pook.off()
 
@@ -710,11 +709,11 @@ class TestVersion4(unittest.TestCase):
         )
 
         response = self.client.orders_history(
-                {
-                    'sinceId': '1111',
-                    'startDate': '2016-01-07',
-                    'endDate': '2020-04-12'
-                }
+            {
+                'sinceId': '1111',
+                'startDate': '2016-01-07',
+                'endDate': '2020-04-12'
+            }
         )
         pook.off()
 

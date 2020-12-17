@@ -111,8 +111,7 @@ class TestVersion3(unittest.TestCase):
         Setup
         """
 
-        self.client = retailcrm.v3(
-                os.getenv('RETAILCRM_URL'), os.getenv('RETAILCRM_KEY'))
+        self.client = retailcrm.v3(os.getenv('RETAILCRM_URL'), os.getenv('RETAILCRM_KEY'))
 
     @staticmethod
     def dictionaryEncode(key, dictionary):
@@ -1509,13 +1508,7 @@ class TestVersion3(unittest.TestCase):
 
         (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/telephony/call/event')
          .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-         .body(urlencode(
-                {
-                    'hangupStatus': 'busy',
-                    'phone': '+799999999',
-                    'code': 'c2321',
-                    'type': 'hangup'
-                }))
+         .body(urlencode({'hangupStatus': 'busy', 'phone': '+799999999', 'code': 'c2321', 'type': 'hangup'}))
          .reply(200)
          .headers(self.__header)
          .json({'success': 'true'})
@@ -1609,21 +1602,20 @@ class TestVersion3(unittest.TestCase):
 
         code = 'xxx'
 
-        (pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/telephony/settings/' + code)
-         .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
-         .body(urlencode(
-                {
-                    'code': code,
-                    'clientId': '123x',
-                    'makeCallUrl': 'url',
-                    'active': 'active',
-                    'name': 'name',
-                    'image': 'url_image'
-                }))
-         .reply(201)
-         .headers(self.__header)
-         .json({'success': 'true'})
-         )
+        (
+            pook.post(os.getenv('RETAILCRM_URL') + '/api/v3/telephony/settings/' + code)
+            .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+            .body(urlencode({
+                'code': code,
+                'clientId': '123x',
+                'makeCallUrl': 'url',
+                'active': 'active',
+                'name': 'name',
+                'image': 'url_image'}))
+            .reply(201)
+            .headers(self.__header)
+            .json({'success': 'true'})
+        )
 
         response = self.client.telephony_settings(code, '123x', 'url', 'active', 'name', 'url_image')
         pook.off()

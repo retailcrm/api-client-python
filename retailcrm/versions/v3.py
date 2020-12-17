@@ -469,7 +469,7 @@ class Client(Base):
         """
         if site is not None:
             self.parameters['site'] = site
-        
+
         self.parameters['offers'] = json.dumps(offers)
 
         return self.post('/store/inventories/upload')
@@ -532,5 +532,5 @@ class Client(Base):
         """
         :return: Response
         """
-        
+
         return self.get('/statistic/update')
