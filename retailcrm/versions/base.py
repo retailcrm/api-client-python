@@ -30,6 +30,7 @@ class Base(object):
         requests_url = base_url + url if not self.parameters else base_url + url + "?" + query_builder(self.parameters)
         response = requests.get(requests_url, headers={
             'X-API-KEY': self.api_key})
+        self.parameters = {}
 
         return Response(response.status_code, response.json())
 
@@ -42,7 +43,8 @@ class Base(object):
         requests_url = base_url + url
         response = requests.post(requests_url, data=self.parameters, headers={
             'X-API-KEY': self.api_key})
-
+        self.parameters = {}
+        
         return Response(response.status_code, response.json())
 
     def api_versions(self):
