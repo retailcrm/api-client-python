@@ -742,7 +742,7 @@ class Client(Base):
         :return: Response
         """
 
-        self.parameters['file'] = json.dumps(file)
+        self.parameters['file'] = file
 
         if site is not None:
             self.parameters['site'] = site
