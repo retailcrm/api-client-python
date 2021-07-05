@@ -41,7 +41,7 @@ class Base(object):
         """
         base_url = self.api_url + '/' + self.api_version if version else self.api_url
         requests_url = base_url + url
-        response = requests.post(requests_url, data=self.parameters, headers={
+        response = requests.post(requests_url, data=(self.parameters if url != '/files/upload' else self.parameters['file']), headers={
             'X-API-KEY': self.api_key})
         self.parameters = {}
         
