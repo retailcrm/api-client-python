@@ -15,7 +15,7 @@ def read(filename):
 
 setup(
     name='retailcrm',
-    version='5.1.1',
+    version='5.1.2',
     description='RetailCRM API client',
     long_description=read('README'),
     url='https://github.com/retailcrm/api-client-python',
