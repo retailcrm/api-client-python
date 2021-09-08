@@ -9,7 +9,7 @@ Install
 
 ::
 
-    pip install retailcrm
+    pip3 install retailcrm
 
 Usage
 -----

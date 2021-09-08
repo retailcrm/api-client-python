@@ -12,7 +12,7 @@ This is Python RetailCRM API client. This library allows to use all available AP
 ## Install
 
 ```
-pip install retailcrm
+pip3 install retailcrm
 ```
 
 ## Usage
