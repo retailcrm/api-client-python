@@ -48,7 +48,7 @@ import retailcrm
 
 client = retailcrm.v4('https://demo.retailcrm.pro', 'uLxXKBwjQteE9NkO3cJAqTXNwvKktaTc')
 
-result = client.customers_history(filter={'sinceId': '1500', 'startDate': '2018-03-01'})
+result = client.customers_history(filters={'sinceId': '1500', 'startDate': '2018-03-01'})
 
 print(result['pagination']['totalCount'])
 ```
