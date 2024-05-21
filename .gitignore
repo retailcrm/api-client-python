@@ -4,6 +4,7 @@
 /*.egg-info
 /dist/
 /venv/
+/.venv/
 /.vscode/
 /build/
 .python-version
