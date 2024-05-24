@@ -18,9 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: ['3.8', '3.9', '3.10', '3.11']
         include:
-          - python-version: '3.9'
+          - python-version: '3.12'
             coverage: 1
     steps:
       - uses: actions/checkout@v2
@@ -51,13 +51,13 @@ jobs:
         env:
           COVERAGE: ${{ matrix.coverage }}
         if: env.COVERAGE != 1
-        run: nosetests -v
+        run: python -m unittest tests/*.py
       - name: Tests with coverage
         env:
           COVERAGE: ${{ matrix.coverage }}
         if: env.COVERAGE == 1
         run: |
-          nosetests -v --with-coverage --cover-xml
+          coverage run -m unittest tests/*.py
       - name: Coverage
         env:
           COVERAGE: ${{ matrix.coverage }}
