@@ -57,7 +57,7 @@ jobs:
           COVERAGE: ${{ matrix.coverage }}
         if: env.COVERAGE == 1
         run: |
-          coverage xml -m unittest tests/*.py -o coverage.xml
+          coverage run -m unittest tests/*.py
       - name: Coverage
         env:
           COVERAGE: ${{ matrix.coverage }}
