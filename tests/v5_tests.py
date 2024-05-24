@@ -245,7 +245,6 @@ class TestVersion5(unittest.TestCase):
         """
 
         (pook.get(os.getenv('RETAILCRM_URL') + '/api/v5/statistic/update')
-         .headers({'X-API-KEY': None})
          .reply(200)
          .headers(self.__header)
          .json({'errorMsg': '"apiKey" is missing.'})
