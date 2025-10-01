@@ -25,7 +25,7 @@ setup(
     license='MIT',
     packages=['retailcrm', 'retailcrm/versions'],
     package_data={},
-    install_requires=['requests', 'multidimensional_urlencode', 'nose', 'coverage', 'pook', 'setuptools'],
+    install_requires=['requests', 'multidimensional_urlencode', 'nose', 'coverage', 'pook', 'setuptools', 'hatchling'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Other Environment',
