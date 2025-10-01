@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools >= 74.1.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "retailcrm"
+version = "5.2.0"
+authors = [
+  { name="Alex Lushpai", email="lushpai@gmail.com" },
+]
+maintainers = [
+  { name="Alex Lushpai", email="lushpai@gmail.com" },
+]
+description = "RetailCRM API client"
+keywords = ["api", "ecom", "retailcrm"]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "multidimensional-urlencode==0.0.4",
+    "nose==1.3.7",
+    "requests==2.32.4",
+    "coverage==4.5.4",
+    "pook==1.3.0",
+    "setuptools==74.1.2"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Other Environment",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/retailcrm/api-client-python"
+Issues = "https://github.com/retailcrm/api-client-python/issues"
