@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "retailcrm"
-version = "5.2.1"
+version = "5.4.0"
 authors = [
   { name="Alex Lushpai", email="lushpai@gmail.com" },
 ]

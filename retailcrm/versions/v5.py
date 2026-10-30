@@ -5,6 +5,7 @@ API Client version 5
 """
 
 import json
+from urllib.parse import quote
 
 from retailcrm.versions.base import Base
 
@@ -881,10 +882,13 @@ class Client(Base):
 
     def files_upload(self, file, site=None):
         """
-        :param file: objects
+        :param file: bytes, a binary file object, or a legacy dictionary
         :param site: string
         :return: Response
         """
+
+        if isinstance(file, (bytes, bytearray)) or hasattr(file, 'read'):
+            return self.post_file('/files/upload', file)
 
         self.parameters['file'] = json.dumps(file)
 
@@ -2143,3 +2147,72 @@ class Client(Base):
         """
 
         return self.get('/statistic/update')
+
+    def knowledge_base_sections(self):
+        """Return all sections without pagination."""
+        return self.get('/knowledge-base/sections')
+
+    def knowledge_base_section_create(self, section):
+        """Create a section from name and optional parentId fields."""
+        self.parameters['section'] = json.dumps(section)
+        return self.post('/knowledge-base/sections/create')
+
+    def knowledge_base_section_edit(self, uid, section):
+        """Update supplied fields only; parentId=0 or None moves to the root."""
+        self.parameters['section'] = json.dumps(section)
+        return self.post('/knowledge-base/sections/' + quote(str(uid), safe='') + '/edit')
+
+    def knowledge_base_section_delete(self, uid):
+        """Delete a section together with its subsections and documents."""
+        return self.post('/knowledge-base/sections/' + quote(str(uid), safe='') + '/delete')
+
+    def knowledge_base_documents(self, filters=None, limit=20, cursor=None):
+        """List documents using cursor pagination, including Markdown and file URLs.
+
+        Pass pagination.nextCursor as cursor; an empty nextCursor ends the list.
+
+        Filters: ids, externalIds, sectionId, directOnly, availableForCopilot,
+        hasFile, search. directOnly without sectionId selects root documents.
+        """
+        self.parameters['filter'] = {
+            name: int(value) if isinstance(value, bool) else value
+            for name, value in (filters or {}).items()
+        }
+        self.parameters['limit'] = limit
+        if cursor is not None:
+            self.parameters['cursor'] = cursor
+        return self.get('/knowledge-base/documents')
+
+    def knowledge_base_document(self, uid, uid_type='externalId'):
+        """Get a document by externalId (default) or internal id."""
+        if uid_type != 'externalId':
+            self.parameters['by'] = uid_type
+        return self.get('/knowledge-base/documents/' + quote(str(uid), safe=''))
+
+    def knowledge_base_document_create(self, document):
+        """Create a document. Attach an original file through files_edit."""
+        self.parameters['document'] = json.dumps(document)
+        return self.post('/knowledge-base/documents/create')
+
+    def knowledge_base_document_edit(self, uid, document, uid_type='externalId'):
+        """Update only supplied fields, preserving False, zero, empty text and None."""
+        self.parameters['document'] = json.dumps(document)
+        if uid_type != 'externalId':
+            self.parameters['by'] = uid_type
+        return self.post('/knowledge-base/documents/' + quote(str(uid), safe='') + '/edit')
+
+    def knowledge_base_document_delete(self, uid, uid_type='externalId'):
+        """Delete a document by externalId (default) or internal id."""
+        if uid_type != 'externalId':
+            self.parameters['by'] = uid_type
+        return self.post('/knowledge-base/documents/' + quote(str(uid), safe='') + '/delete')
+
+    def knowledge_base_documents_history(self, filters=None, limit=20, page=1):
+        """Read changes using sinceId, documentId, startDate and endDate filters.
+
+        Content changes contain hashes rather than text. Sections have no history.
+        """
+        self.parameters['filter'] = filters or {}
+        self.parameters['limit'] = limit
+        self.parameters['page'] = page
+        return self.get('/knowledge-base/documents/history')
