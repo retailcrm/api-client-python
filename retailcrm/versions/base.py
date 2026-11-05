@@ -47,6 +47,17 @@ class Base(object):
         
         return Response(response.status_code, response.json())
 
+    def post_file(self, url, content):
+        """Post original file bytes or a binary file object."""
+        response = requests.post(
+            self.api_url + '/' + self.api_version + url,
+            data=content,
+            headers={'X-API-KEY': self.api_key,
+                     'Content-Type': 'application/octet-stream'},
+        )
+        self.parameters = {}
+        return Response(response.status_code, response.json())
+
     def api_versions(self):
         """
         :return: Response

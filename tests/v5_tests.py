@@ -4,8 +4,9 @@
 RetailCRM API client v5 tests
 """
 
-from urllib.parse import urlencode
+from urllib.parse import urlencode, parse_qs, urlsplit
 import unittest
+import io
 import os
 import retailcrm
 import pook
@@ -5823,3 +5824,157 @@ class TestVersion5(unittest.TestCase):
 
         self.assertTrue(response.is_successful(), True)
         self.assertTrue(response.get_status_code() < 400, True)
+
+    @pook.on
+    def test_knowledge_base_write_methods(self):
+        cases = [
+            ('knowledge_base_section_create', ({'name': 'Shipping'},),
+             'sections/create', 'section', {'name': 'Shipping'}, None),
+            ('knowledge_base_section_edit', (7, {'parentId': 0}),
+             'sections/7/edit', 'section', {'parentId': 0}, None),
+            ('knowledge_base_section_delete', (7,),
+             'sections/7/delete', None, None, None),
+            ('knowledge_base_document_create', ({'title': 'Shipping', 'externalId': 'doc-7'},),
+             'documents/create', 'document', {'title': 'Shipping', 'externalId': 'doc-7'}, None),
+            ('knowledge_base_document_edit', (7, {'content': '', 'availableForCopilot': False, 'sectionId': None}, 'id'),
+             'documents/7/edit', 'document', {'content': '', 'availableForCopilot': False, 'sectionId': None}, 'id'),
+            ('knowledge_base_document_edit', ('doc-7', {'externalId': None}),
+             'documents/doc-7/edit', 'document', {'externalId': None}, None),
+            ('knowledge_base_document_delete', (7, 'id'),
+             'documents/7/delete', None, None, 'id'),
+            ('knowledge_base_document_delete', ('doc-7',),
+             'documents/doc-7/delete', None, None, None),
+        ]
+        for method, args, path, field, payload, by in cases:
+            with self.subTest(method=method, args=args):
+                parameters = {}
+                if field:
+                    parameters[field] = json.dumps(payload)
+                if by:
+                    parameters['by'] = by
+                request = (pook.post(os.getenv('RETAILCRM_URL') + '/api/v5/knowledge-base/' + path)
+                           .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')}))
+                if parameters:
+                    request.body(urlencode(parameters))
+                else:
+                    request.filter(lambda req, _: not req.body)
+                mock = request.reply(200).headers(self.__header).json({'success': True, 'id': 7})
+                result = getattr(self.client, method)(*args)
+                self.assertTrue(mock.mock.done)
+                self.assertTrue(result.is_successful())
+                self.assertEqual(7, result.get_response()['id'])
+                self.assertEqual({}, self.client.parameters)
+
+    @pook.on
+    def test_knowledge_base_read_methods(self):
+        cases = [
+            ('knowledge_base_sections', (), 'sections', {}, {'sections': [{'id': 1, 'parentId': None}]}),
+            ('knowledge_base_document', ('doc-7',), 'documents/doc-7', {},
+             {'document': {'id': 7, 'content': None, 'file': None}}),
+            ('knowledge_base_document', (7, 'id'), 'documents/7', {'by': ['id']},
+             {'document': {'id': 7, 'file': {'id': 9, 'url': 'https://example.com/file'}}}),
+            ('knowledge_base_documents', ({'ids': [7, 8], 'externalIds': ['doc-7'], 'hasFile': False,
+                                           'directOnly': True, 'availableForCopilot': False,
+                                           'search': 'Shipping'}, 20, 'opaque+/='),
+             'documents', {'filter[ids][]': ['7', '8'],
+                           'filter[externalIds][]': ['doc-7'], 'filter[hasFile]': ['0'],
+                           'filter[directOnly]': ['1'], 'filter[availableForCopilot]': ['0'],
+                           'filter[search]': ['Shipping'], 'limit': ['20'], 'cursor': ['opaque+/=']},
+             {'documents': [{'id': 7, 'content': '# Shipping', 'availableForCopilot': False}]}),
+            ('knowledge_base_documents_history', ({'sinceId': 12, 'documentId': 7,
+                                                   'startDate': '2026-10-26 10:00:00',
+                                                   'endDate': '2026-10-26 11:00:00'},),
+             'documents/history', {'filter[sinceId]': ['12'], 'filter[documentId]': ['7'],
+                                   'filter[startDate]': ['2026-10-26 10:00:00'],
+                                   'filter[endDate]': ['2026-10-26 11:00:00'], 'limit': ['20'], 'page': ['1']},
+             {'history': [{'id': 13, 'field': 'section', 'oldValue': None, 'newValue': {'id': 2}}]}),
+        ]
+        for method, args, path, query, body in cases:
+            with self.subTest(method=method, args=args):
+                body = dict(body, success=True)
+                url = os.getenv('RETAILCRM_URL') + '/api/v5/knowledge-base/' + path
+                mock = (pook.get(url).headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+                        .filter(lambda req, _, expected=query: parse_qs(urlsplit(req.rawurl).query) == expected)
+                        .reply(200).headers(self.__header).json(body))
+                result = getattr(self.client, method)(*args)
+                self.assertTrue(mock.mock.done)
+                self.assertEqual(body, result.get_response())
+                self.assertEqual({}, self.client.parameters)
+
+    @pook.on
+    def test_knowledge_base_documents_cursor_pagination(self):
+        responses = [
+            {'success': True, 'documents': [{'id': 7}], 'pagination': {'nextCursor': 'next+/='}},
+            {'success': True, 'documents': [{'id': 8}], 'pagination': {'nextCursor': ''}},
+        ]
+        ids, cursor = [], None
+        for body in responses:
+            query = {'limit': 20}
+            if cursor:
+                query['cursor'] = cursor
+            url = os.getenv('RETAILCRM_URL') + '/api/v5/knowledge-base/documents?' + urlencode(query)
+            mock = (pook.get(url).headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+                    .reply(200).headers(self.__header).json(body))
+            result = self.client.knowledge_base_documents(limit=20, cursor=cursor)
+            self.assertTrue(mock.mock.done)
+            payload = result.get_response()
+            ids.extend(doc['id'] for doc in payload['documents'])
+            cursor = payload['pagination']['nextCursor']
+        self.assertEqual([7, 8], ids)
+        self.assertEqual('', cursor)
+
+    @pook.on
+    def test_knowledge_base_file_attachment(self):
+        file = {'id': 9, 'filename': 'manual.pdf', 'attachment': [{'knowledgeBaseDocument': {'id': 7}}]}
+        mock = (pook.post(os.getenv('RETAILCRM_URL') + '/api/v5/files/9/edit')
+                .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+                .body(self.dictionaryEncode('file', file))
+                .reply(200).headers(self.__header).json({'success': True, 'file': file}))
+        result = self.client.files_edit(file)
+        self.assertTrue(mock.mock.done)
+        self.assertEqual(file, result.get_response()['file'])
+
+    @pook.on
+    def test_knowledge_base_api_errors(self):
+        for status in (400, 403, 404, 500):
+            with self.subTest(status=status):
+                mock = (pook.get(os.getenv('RETAILCRM_URL') + '/api/v5/knowledge-base/documents/missing')
+                        .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+                        .reply(status).headers(self.__header).json({'success': False, 'errorMsg': 'Failure'}))
+                result = self.client.knowledge_base_document('missing')
+                self.assertTrue(mock.mock.done)
+                self.assertFalse(result.is_successful())
+                self.assertEqual(status, result.get_status_code())
+                self.assertEqual('Failure', result.get_error_msg())
+
+    @pook.on
+    def test_knowledge_base_default_pagination(self):
+        for method in ('knowledge_base_documents', 'knowledge_base_documents_history'):
+            with self.subTest(method=method):
+                path, query = 'documents', {'limit': 20}
+                if method == 'knowledge_base_documents_history':
+                    path += '/history'
+                    query['page'] = 1
+                url = os.getenv('RETAILCRM_URL') + '/api/v5/knowledge-base/' + path + '?' + urlencode(query)
+                mock = (pook.get(url).headers({'X-API-KEY': os.getenv('RETAILCRM_KEY')})
+                        .reply(200).headers(self.__header).json({'success': True}))
+                result = getattr(self.client, method)()
+                self.assertTrue(mock.mock.done)
+                self.assertTrue(result.is_successful())
+                self.assertEqual({}, self.client.parameters)
+
+    @pook.on
+    def test_files_upload_original_file(self):
+        for content in (b'original bytes', io.BytesIO(b'original bytes')):
+            with self.subTest(content=type(content).__name__):
+                mock = (pook.post(os.getenv('RETAILCRM_URL') + '/api/v5/files/upload')
+                        .headers({'X-API-KEY': os.getenv('RETAILCRM_KEY'),
+                                  'Content-Type': 'application/octet-stream'})
+                        .filter(lambda req, _: (req.body.getvalue().decode()
+                                                if hasattr(req.body, 'getvalue') else req.body) == 'original bytes')
+                        .reply(201).headers(self.__header).json({'success': True, 'file': {'id': 9}}))
+                result = self.client.files_upload(content)
+                self.assertTrue(mock.mock.done)
+                self.assertTrue(result.is_successful())
+                self.assertEqual(9, result.get_response()['file']['id'])
+                self.assertEqual({}, self.client.parameters)
